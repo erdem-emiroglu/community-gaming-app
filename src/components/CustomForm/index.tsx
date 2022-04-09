@@ -35,9 +35,9 @@ export const CustomForm: React.FC<CustomFormProps> = ({
         <Form.Group key={itemProps.key}>
           {!!itemProps.label && <Form.Label>{itemProps.label}</Form.Label>}
           <Form.Control {...itemProps} required={itemProps.required} />
-          {!!itemProps.errorMessage && (
+          {!!itemProps.errormessage && (
             <Form.Control.Feedback type="invalid">
-              {itemProps.errorMessage}
+              {itemProps.errormessage}
             </Form.Control.Feedback>
           )}
         </Form.Group>

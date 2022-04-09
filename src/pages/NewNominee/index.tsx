@@ -47,7 +47,6 @@ export const NewNominee: React.FC = () => {
           text="GO BACK"
           onClick={() => navigate(-1)}
         />
-
         <CustomForm
           title="ADD NEW NOMINEE"
           onSubmit={createNewNominee}
@@ -58,7 +57,7 @@ export const NewNominee: React.FC = () => {
               label: "Tournament Name",
               value: newNominee.tournamentName,
               onChange: (event) => onFormInputChange(event, "tournamentName"),
-              errorMessage: "Field is required",
+              errormessage: "Field is required",
               required: true,
             },
             {

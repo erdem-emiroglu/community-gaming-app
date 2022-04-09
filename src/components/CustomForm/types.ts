@@ -10,7 +10,7 @@ export interface CustomFormProps {
 
 export interface CustomFormItemProps extends FormControlProps {
   label?: string;
-  errorMessage?: string;
+  errormessage?: string;
   required?: boolean;
   key: string;
 }
