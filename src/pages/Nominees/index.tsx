@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Container, Row, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,18 +12,15 @@ import {
 import { CustomDropdownItemProps } from "components/CustomDropdown/types";
 import { NomineeAPIService as nomineeService } from "api/services/nominee.service";
 import { NomineeModel } from "models/Nominee";
-import { StorageHelper } from "helpers/storageHelper";
 import { VoteType } from "helpers/typeHelper";
 import {
   ASCENDING_FILTER,
   DESCENDING_FILTER,
   INITIAL_FILTER,
 } from "helpers/enumHelper";
-import { handleVoteStatus } from "utils/voteStatusHandler";
 import "./styles.scss";
 
 export const Nominees: React.FC = () => {
-  const storageHelper = useMemo(() => new StorageHelper(), []);
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState<string>(INITIAL_FILTER);
@@ -40,14 +37,7 @@ export const Nominees: React.FC = () => {
     setIsRemoveModalShown((prevState) => !prevState);
   };
 
-  const getVoteStatus = useCallback(
-    (id: number) => storageHelper.getLastVoteStatus(id),
-    [storageHelper]
-  );
-
   const onRemoveNomine = () => {
-    // remove vote status from local storage
-    storageHelper.removeLastVoteStatus(removableNominee?.id as number);
     setIsRemoveModalShown(false);
     setRemovedNominee(removableNominee);
 
@@ -65,19 +55,23 @@ export const Nominees: React.FC = () => {
 
   const onVoteNominee = useCallback(
     (votedNominee: NomineeModel, type: VoteType) => {
-      const lastVoteStatus = getVoteStatus(votedNominee.id);
-      const votePoints = handleVoteStatus(
-        lastVoteStatus,
-        type,
-        votedNominee.points,
-        votedNominee.id
-      );
+      let currentVotePoints = votedNominee.points;
 
-      nomineeService.updatePoints(votedNominee.id, votePoints).finally(() => {
-        setFetchNomineesCounter((prevCounter) => prevCounter + 1);
-      });
+      if (type === "downvote") {
+        currentVotePoints--;
+      }
+
+      if (type === "upvote") {
+        currentVotePoints++;
+      }
+
+      nomineeService
+        .updatePoints(votedNominee.id, currentVotePoints)
+        .finally(() => {
+          setFetchNomineesCounter((prevCounter) => prevCounter + 1);
+        });
     },
-    [getVoteStatus]
+    []
   );
 
   const dropdownItems: CustomDropdownItemProps[] = [
@@ -138,7 +132,6 @@ export const Nominees: React.FC = () => {
               <NomineeCard
                 {...nominee}
                 key={nominee.id}
-                voteStatus={getVoteStatus(nominee.id)}
                 onDelete={() => {
                   handleShowAddNomineeModal();
                   setRemovableNominee(nominee);

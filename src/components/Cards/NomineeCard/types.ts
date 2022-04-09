@@ -5,7 +5,6 @@ export interface NomineeCardProps {
   lastVotedDate?: Date;
   points?: number;
   id: number;
-  voteStatus: string | null;
   onUpvote: () => void;
   onDownvote: () => void;
   onDelete: () => void;

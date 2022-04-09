@@ -1,8 +1,8 @@
 export interface NomineeCreateModel {
   tournamentName: string;
+  tournamentWinner: string;
+  imageSource: string;
   lastUpdateDate?: Date;
-  tournamentWinner?: string;
-  imageSource?: string;
 }
 
 export interface NomineeModel extends NomineeCreateModel {

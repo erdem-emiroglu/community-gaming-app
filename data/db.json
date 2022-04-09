@@ -4,10 +4,10 @@
       "tournamentName": "Tournament 2",
       "tournamentWinner": "Winner 2",
       "imageSource": "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota2_social.jpg",
-      "lastUpdateDate": "2022-04-09T00:31:17.914Z",
-      "points": 1,
+      "lastUpdateDate": "2022-04-09T12:08:08.708Z",
+      "points": 2,
       "id": 2,
-      "lastVotedDate": "2022-04-09T00:31:17.914Z"
+      "lastVotedDate": "2022-04-09T12:08:08.708Z"
     },
     {
       "tournamentName": "Tournament 3",
@@ -22,9 +22,10 @@
       "tournamentName": "Tournament 6",
       "tournamentWinner": "Winner 6",
       "imageSource": "",
-      "lastUpdateDate": "2022-04-09T00:30:14.370Z",
-      "points": 0,
-      "id": 5
+      "lastUpdateDate": "2022-04-09T12:08:07.824Z",
+      "points": 7,
+      "id": 5,
+      "lastVotedDate": "2022-04-09T12:08:07.824Z"
     },
     {
       "tournamentName": "Tournament 7",
@@ -34,15 +35,6 @@
       "points": 1,
       "id": 6,
       "lastVotedDate": "2022-04-09T02:16:06.117Z"
-    },
-    {
-      "id": 25,
-      "points": 8,
-      "lastVotedDate": "2021-11-02T08:27:24Z",
-      "lastUpdateDate": "2022-01-08T08:49:31Z",
-      "imageSource": "http://dummyimage.com/219x100.png/dddddd/000000",
-      "tournamentName": "Aerified",
-      "tournamentWinner": "Barton, Baumbach and Glover"
     },
     {
       "id": 26,
@@ -72,15 +64,6 @@
       "tournamentWinner": "Rohan Inc"
     },
     {
-      "id": 29,
-      "points": 57,
-      "lastVotedDate": "2021-04-18T19:54:28Z",
-      "lastUpdateDate": "2022-01-24T12:09:24Z",
-      "imageSource": "http://dummyimage.com/204x100.png/ff4444/ffffff",
-      "tournamentName": "Daltfresh",
-      "tournamentWinner": "Larson-Langworth"
-    },
-    {
       "id": 30,
       "points": 23,
       "lastVotedDate": "2021-09-14T20:33:01Z",
@@ -88,15 +71,6 @@
       "imageSource": "http://dummyimage.com/171x100.png/5fa2dd/ffffff",
       "tournamentName": "Tres-Zap",
       "tournamentWinner": "Wisozk, Bergnaum and Rohan"
-    },
-    {
-      "id": 31,
-      "points": 92,
-      "lastVotedDate": "2021-04-25T05:55:33Z",
-      "lastUpdateDate": "2022-01-03T05:08:17Z",
-      "imageSource": "http://dummyimage.com/153x100.png/dddddd/000000",
-      "tournamentName": "Tempsoft",
-      "tournamentWinner": "Hessel-Bailey"
     },
     {
       "id": 32,
@@ -117,15 +91,6 @@
       "tournamentWinner": "Dare, Bernhard and Larson"
     },
     {
-      "id": 36,
-      "points": 97,
-      "lastVotedDate": "2021-05-11T09:52:50Z",
-      "lastUpdateDate": "2022-03-19T14:05:26Z",
-      "imageSource": "http://dummyimage.com/201x100.png/ff4444/ffffff",
-      "tournamentName": "Gembucket",
-      "tournamentWinner": "Upton, Nienow and Schuppe"
-    },
-    {
       "id": 37,
       "points": 88,
       "lastVotedDate": "2021-08-15T01:14:09Z",
@@ -133,15 +98,6 @@
       "imageSource": "http://dummyimage.com/222x100.png/5fa2dd/ffffff",
       "tournamentName": "Solarbreeze",
       "tournamentWinner": "Kemmer-Green"
-    },
-    {
-      "id": 38,
-      "points": 22,
-      "lastVotedDate": "2021-06-19T22:35:45Z",
-      "lastUpdateDate": "2022-01-27T09:05:01Z",
-      "imageSource": "http://dummyimage.com/193x100.png/5fa2dd/ffffff",
-      "tournamentName": "Fix San",
-      "tournamentWinner": "Von Inc"
     },
     {
       "id": 39,

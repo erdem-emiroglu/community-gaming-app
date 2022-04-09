@@ -57,7 +57,7 @@ export const NewNominee: React.FC = () => {
               label: "Tournament Name",
               value: newNominee.tournamentName,
               onChange: (event) => onFormInputChange(event, "tournamentName"),
-              errormessage: "Field is required",
+              errormessage: "Tournament Name is required",
               required: true,
             },
             {
@@ -65,12 +65,16 @@ export const NewNominee: React.FC = () => {
               label: "Tournament Winner Team",
               value: newNominee.tournamentWinner,
               onChange: (event) => onFormInputChange(event, "tournamentWinner"),
+              errormessage: "Tournament Winner Team is required",
+              required: true,
             },
             {
               key: "cover_image_url",
               label: "Cover Image URL",
               value: newNominee.imageSource,
               onChange: (event) => onFormInputChange(event, "imageSource"),
+              errormessage: "Cover Image URL is required",
+              required: true,
             },
           ]}
         />

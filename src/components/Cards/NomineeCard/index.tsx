@@ -11,7 +11,6 @@ export const NomineeCard: React.FC<NomineeCardProps> = ({
   lastVotedDate,
   tournamentWinner,
   points,
-  voteStatus,
   onDelete,
   onDownvote,
   onUpvote,
@@ -24,13 +23,7 @@ export const NomineeCard: React.FC<NomineeCardProps> = ({
       image={imageSource}
       content={
         <>
-          {tournamentWinner ? (
-            <>
-              <b>Winner:</b> {tournamentWinner} <br />
-            </>
-          ) : (
-            <br />
-          )}
+          <b>Winner:</b> {tournamentWinner} <br />
           {!!lastVotedDate ? (
             <>
               <b>Last Vote Date:</b> {dateFormat(lastVotedDate)}
@@ -49,7 +42,7 @@ export const NomineeCard: React.FC<NomineeCardProps> = ({
               variant="warning"
               iconProps={{ name: "bi-chevron-down" }}
               onClick={onDownvote}
-              outlined={voteStatus !== "downvoted"}
+              outlined
               cornered
             />
             <CustomButton
@@ -58,7 +51,7 @@ export const NomineeCard: React.FC<NomineeCardProps> = ({
               variant="info"
               iconProps={{ name: "bi-chevron-up" }}
               onClick={onUpvote}
-              outlined={voteStatus !== "upvoted"}
+              outlined
               cornered
             />
           </ButtonGroup>
