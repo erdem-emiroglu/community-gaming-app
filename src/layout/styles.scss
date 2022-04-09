@@ -1,0 +1,17 @@
+.layout-container {
+  min-height: 100vh;
+  overflow: auto;
+}
+
+.page-wrapper {
+  justify-content: center;
+  padding: 5vh 15vw;
+
+  @media screen and (max-width: 992px) {
+    padding: 5vh 15vw !important;
+  }
+
+  @media screen and (max-width: 600px) {
+    padding: 5vh 0 !important;
+  }
+}

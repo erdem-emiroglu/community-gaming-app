@@ -1,0 +1,26 @@
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-container {
+  width: fit-content;
+  padding: unset;
+}
+
+.cornered {
+  border-radius: unset;
+}
+
+.cornered-dropdown {
+  > button {
+    @extend .cornered;
+  }
+}
+
+.cornered-dropdown-item {
+  @extend .cornered;
+}
+
+.icon-container {
+  margin-right: 5px;
+}
