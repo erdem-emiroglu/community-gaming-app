@@ -13,17 +13,13 @@ import { CustomDropdownItemProps } from "components/CustomDropdown/types";
 import { NomineeAPIService as nomineeService } from "api/services/nominee.service";
 import { NomineeModel } from "models/Nominee";
 import { VoteType } from "helpers/typeHelper";
-import {
-  ASCENDING_FILTER,
-  DESCENDING_FILTER,
-  INITIAL_FILTER,
-} from "helpers/enumHelper";
+import {Filter} from "helpers/enumHelper";
 import "./styles.scss";
 
 export const Nominees: React.FC = () => {
   const navigate = useNavigate();
 
-  const [filter, setFilter] = useState<string>(INITIAL_FILTER);
+  const [filter, setFilter] = useState<Filter>(Filter.Initial);
   const [isRemoveModalShown, setIsRemoveModalShown] = useState<boolean>(false);
   const [isToastShown, setIsToastShown] = useState<boolean>(false);
   const [fetchNomineesCounter, setFetchNomineesCounter] = useState<number>(0);
@@ -78,7 +74,7 @@ export const Nominees: React.FC = () => {
     {
       text: "MOST POINTS",
       onClick: () => {
-        setFilter(DESCENDING_FILTER);
+        setFilter(Filter.Descending);
         setCurrentPage(1);
       },
       key: "filter_most_points",
@@ -86,7 +82,7 @@ export const Nominees: React.FC = () => {
     {
       text: "LESS POINTS",
       onClick: () => {
-        setFilter(ASCENDING_FILTER);
+        setFilter(Filter.Ascending);
         setCurrentPage(1);
       },
       key: "filter_less_points",

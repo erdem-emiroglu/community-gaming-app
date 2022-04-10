@@ -1,7 +1,7 @@
 export interface NomineeCardProps {
   tournamentName: string;
   imageSource?: string;
-  tournamentWinner?: string;
+  tournamentWinner: string;
   lastVotedDate?: Date;
   points?: number;
   id: number;
