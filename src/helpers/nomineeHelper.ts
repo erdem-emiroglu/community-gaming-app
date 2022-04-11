@@ -31,7 +31,7 @@ export class NomineeHelper {
     }
 
     const nomineeData = this.nominees.map((nominee) => {
-      if (nominee.tournamentName === upvotedNominee.tournamentName) {
+      if (nominee.id === upvotedNominee.id) {
         return {
           ...nominee,
           points: newNomineePoints,
