@@ -1,2 +1,2 @@
 export type VoteType = "upvote" | "downvote";
-export type LastVoteStatusType = "upvoted" | "downvoted";
+export type FilterType = "descending" | "ascending" | null;

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useMemo, useState } from "react";
 import { Container, Row, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,71 +11,62 @@ import {
   CustomToast,
 } from "components";
 import { CustomDropdownItemProps } from "components/CustomDropdown/types";
-import { NomineeAPIService as nomineeService } from "api/services/nominee.service";
+import { NomineeHelper } from "helpers/nomineeHelper";
+import { splitData } from "utils/splitData";
 import { NomineeModel } from "models/Nominee";
-import { VoteType } from "helpers/typeHelper";
-import {Filter} from "helpers/enumHelper";
+import { useNominee } from "context/nominee";
+import { FilterType } from "helpers/typeHelper";
 import "./styles.scss";
 
 export const Nominees: React.FC = () => {
   const navigate = useNavigate();
+  const { nominees, setNominees } = useNominee();
+  const nomineeHelper = useMemo(
+    () => new NomineeHelper(nominees, setNominees),
+    [nominees, setNominees]
+  );
 
-  const [filter, setFilter] = useState<Filter>(Filter.Initial);
+  const [filter, setFilter] = useState<FilterType>(null);
   const [isRemoveModalShown, setIsRemoveModalShown] = useState<boolean>(false);
   const [isToastShown, setIsToastShown] = useState<boolean>(false);
-  const [fetchNomineesCounter, setFetchNomineesCounter] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [removableNominee, setRemovableNominee] = useState<NomineeModel>();
   const [removedNominee, setRemovedNominee] = useState<NomineeModel>();
-  const [nominees, setNominees] = useState<NomineeModel[]>([]);
+  const [nomineeFetcher, setNomineeFetcher] = useState<number>(0);
 
-  const handleShowAddNomineeModal = () => {
+  const splittedNominees = useMemo(
+    () => splitData(nominees, currentPage),
+    [nominees, currentPage]
+  );
+
+  const handleShowRemoveNomineeModal = () => {
     setIsRemoveModalShown((prevState) => !prevState);
   };
+  const onDownvote = (nominee: NomineeModel) => nomineeHelper.downvote(nominee);
+  const onUpvote = (nominee: NomineeModel) => nomineeHelper.upvote(nominee);
 
   const onRemoveNomine = () => {
-    setIsRemoveModalShown(false);
-    setRemovedNominee(removableNominee);
-
-    nomineeService.delete(removableNominee?.id as number).finally(() => {
+    const deletedNominee = removableNominee as NomineeModel;
+    try {
+      nomineeHelper.delete(deletedNominee);
+      setRemovedNominee(removableNominee);
+      setIsRemoveModalShown(false);
+    } finally {
       setIsToastShown(true);
-
-      // check for last nominee for last page
-      if (nominees.length === 1 && currentPage > 1) {
-        return setCurrentPage((prevPage) => prevPage - 1);
+      if (splittedNominees.length === 1 && currentPage > 1) {
+        setCurrentPage((prevPage) => prevPage - 1);
       } else {
-        setFetchNomineesCounter((prevCounter) => prevCounter + 1);
+        setNomineeFetcher((prev) => prev + 1);
       }
-    });
+    }
   };
-
-  const onVoteNominee = useCallback(
-    (votedNominee: NomineeModel, type: VoteType) => {
-      let currentVotePoints = votedNominee.points;
-
-      if (type === "downvote") {
-        currentVotePoints--;
-      }
-
-      if (type === "upvote") {
-        currentVotePoints++;
-      }
-
-      nomineeService
-        .updatePoints(votedNominee.id, currentVotePoints)
-        .finally(() => {
-          setFetchNomineesCounter((prevCounter) => prevCounter + 1);
-        });
-    },
-    []
-  );
 
   const dropdownItems: CustomDropdownItemProps[] = [
     {
       text: "MOST POINTS",
       onClick: () => {
-        setFilter(Filter.Descending);
+        setFilter("descending");
         setCurrentPage(1);
       },
       key: "filter_most_points",
@@ -82,7 +74,7 @@ export const Nominees: React.FC = () => {
     {
       text: "LESS POINTS",
       onClick: () => {
-        setFilter(Filter.Ascending);
+        setFilter("ascending");
         setCurrentPage(1);
       },
       key: "filter_less_points",
@@ -90,11 +82,10 @@ export const Nominees: React.FC = () => {
   ];
 
   useEffect(() => {
-    nomineeService.get(currentPage, filter).then((response) => {
-      setTotalPages(response.totalPage);
-      setNominees(response.data);
-    });
-  }, [currentPage, filter, fetchNomineesCounter]);
+    const response = nomineeHelper.get(filter);
+    setTotalPages(response.totalPage);
+    setNominees(response.data);
+  }, [currentPage, filter, nomineeFetcher]);
 
   return (
     <>
@@ -122,18 +113,24 @@ export const Nominees: React.FC = () => {
         </h3>
 
         {/* Nominee Cards */}
-        {!!nominees.length ? (
+        {splittedNominees.length ? (
           <Container className="cards-wrapper">
-            {nominees.map((nominee) => (
+            {splittedNominees.map((nominee) => (
               <NomineeCard
                 {...nominee}
                 key={nominee.id}
                 onDelete={() => {
-                  handleShowAddNomineeModal();
+                  handleShowRemoveNomineeModal();
                   setRemovableNominee(nominee);
                 }}
-                onDownvote={() => onVoteNominee(nominee, "downvote")}
-                onUpvote={() => onVoteNominee(nominee, "upvote")}
+                onDownvote={() => {
+                  onDownvote(nominee);
+                  setNomineeFetcher((prev) => prev + 1);
+                }}
+                onUpvote={() => {
+                  onUpvote(nominee);
+                  setNomineeFetcher((prev) => prev + 1);
+                }}
               />
             ))}
           </Container>
@@ -144,7 +141,7 @@ export const Nominees: React.FC = () => {
         )}
 
         {/* Pagination */}
-        {!!nominees.length && (
+        {!!splittedNominees.length && (
           <CustomPagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
@@ -155,7 +152,7 @@ export const Nominees: React.FC = () => {
       <CustomModal
         confirmation
         isShown={isRemoveModalShown}
-        onHide={handleShowAddNomineeModal}
+        onHide={handleShowRemoveNomineeModal}
         onConfirm={onRemoveNomine}
         title={"Remove Nominee"}
         description={

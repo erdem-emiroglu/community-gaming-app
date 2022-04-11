@@ -3,13 +3,15 @@ import { CustomButton, CustomForm, CustomToast } from "components";
 import { Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { cleanForm } from "utils/formCleaner";
-import { NomineeAPIService as nomineeService } from "api/services/nominee.service";
+import { NomineeHelper } from "helpers/nomineeHelper";
+import { useNominee } from "context/nominee";
 import "./styles.scss";
 
 export const NewNominee: React.FC = () => {
   const navigate = useNavigate();
+  const {nominees, setNominees}= useNominee();
+  const nomineeHelper = new NomineeHelper(nominees, setNominees);
 
-  const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [isToastShown, setIsToastShown] = useState(false);
   const [addedNominee, setAddedNominee] = useState("");
   const [newNominee, setNewNominee] = useState({
@@ -28,11 +30,9 @@ export const NewNominee: React.FC = () => {
     }));
   };
 
-  const createNewNominee = async () => {
-    setIsFormDisabled(true);
-    const response = await nomineeService.create(newNominee);
-    setIsFormDisabled(false);
-    setAddedNominee(response.tournamentName);
+  const createNewNominee = () => {
+    nomineeHelper.create(newNominee);
+    setAddedNominee(newNominee.tournamentName);
     setNewNominee((prevState) => cleanForm(prevState));
     setIsToastShown(true);
   };
@@ -50,7 +50,6 @@ export const NewNominee: React.FC = () => {
         <CustomForm
           title="ADD NEW NOMINEE"
           onSubmit={createNewNominee}
-          disabled={isFormDisabled}
           items={[
             {
               key: "tournament_name",
@@ -58,7 +57,7 @@ export const NewNominee: React.FC = () => {
               value: newNominee.tournamentName,
               onChange: (event) => onFormInputChange(event, "tournamentName"),
               errormessage: "Tournament Name is required",
-              required: true,
+              required: true
             },
             {
               key: "tournament_winner_team",
